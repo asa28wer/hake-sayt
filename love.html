@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسالة خاصة ❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- الواجهة الأولى: شاشة الظرف --- */
+        #envelope-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .click-hint {
+            color: #ff4d6d;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .envelope-icon {
+            font-size: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        #envelope-screen:hover .envelope-icon {
+            transform: scale(1.1);
+        }
+
+        /* --- الواجهة الثانية: الورقة القديمة --- */
+        #letter-screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            width: 90%;
+            max-width: 550px;
+        }
+
+        /* تصميم الورقة البنية القديمة مع الزاوية المطوية */
+        .paper {
+            background-color: #e8d8c3; /* لون بني ورق قديم */
+            /* تدرج تحبيبي خفيف يعطي إحساس ألياف الورق */
+            background-image: radial-gradient(#d1bf9d 15%, transparent 16%),
+                              radial-gradient(#d1bf9d 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            border: 1px solid #c2b090;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            padding: 40px 30px 30px 30px;
+            position: relative;
+            border-radius: 4px;
+            /* قص الزاوية اليسرى العليا لإفساح مجال للثنية */
+            clip-path: polygon(40px 0, 100% 0, 100% 100%, 0 100%, 0 40px);
+        }
+
+        /* كود الثنية (الزاوية المطوية من فوق على اليسار) */
+        .paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            /* حجم ولون خلفية الثنية البنية الداكنة مع الظل */
+            border-width: 0 0 40px 40px;
+            border-color: transparent transparent #beab89 transparent;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .pink-header {
+            color: #d6405d;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .letter-content {
+            color: #2c221e; /* لون خط بني داكن يناسب الورقة القديمة */
+            font-size: 18px;
+            line-height: 1.8;
+            white-space: pre-line;
+            margin-bottom: 25px;
+        }
+
+        .pink-footer {
+            color: #d6405d;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 30px;
+            direction: ltr;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .btn-sweet {
+            background-color: transparent;
+            border: 2px solid #d6405d;
+            color: #d6405d;
+            padding: 10px 22px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sweet:hover {
+            background-color: #d6405d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* --- الواجهة الثالثة: الصفحة الثانية (الصورة ببرواز مائل واهتزاز) --- */
+        #page2-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .user-image {
+            max-width: 90%;
+            width: 320px;
+            background: #ffffff;
+            padding: 12px 12px 25px 12px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: rotate(-3deg);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .user-image:hover {
+            transform: rotate(0deg) scale(1.03);
+        }
+
+        .shake-animation {
+            animation: polaroidShake 0.8s ease-in-out;
+        }
+
+        @keyframes polaroidShake {
+            0% { transform: scale(0.8) rotate(0deg); opacity: 0; }
+            20% { transform: scale(1.05) rotate(-6deg); opacity: 1; }
+            40% { transform: scale(1) rotate(4deg); }
+            60% { transform: scale(1) rotate(-4deg); }
+            80% { transform: scale(1) rotate(2deg); }
+            100% { transform: scale(1) rotate(-3deg); }
+        }
+
+        .page2-text {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. شاشة فتح الرسالة -->
+    <div id="envelope-screen" onclick="openLetter()">
+        <div class="click-hint">افتح الرسالة</div>
+        <div class="envelope-icon">💌</div>
+    </div>
+
+    <!-- 2. شاشة الورقة القديمة المكتوبة -->
+    <div id="letter-screen">
+        <div class="paper">
+            <div class="pink-header">
+                اهلين بيك ❤️
+            </div>
+            
+            <div class="letter-content">
+اهلييين بيك في مواهبي ومهاراتي !❤️
+
+قررت اليوم نوريك شوي منهم ونعبرلك بطريقة مختلفة ونسوي شوي حركات وكده مخصوصة ليك
+عموما ع قد مانعبر ومهما نجرب من طرق وكلام مش ح نعرف نوصف مدى حبي ليك بس كل الي يهمني ان ديما تكون فرحان ومرتاح ومش مضايق مني ولا مضايق من اي شي  
+في اهم مواهبي معرفتش نعبر بس ماعلينا اسكتشف 
+
+وبحبككككككككككككككككك❤️❤️
+            </div>
+
+            <div class="pink-footer">
+                You’re my favorite person
+            </div>
+
+            <div class="button-container">
+                <button class="btn-sweet" onclick="goToPage2()">رص هنا ياحلو</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. الصفحة الثانية (الصورة) -->
+    <div id="page2-screen">
+        <img src="love.jpeg" alt="صورة خاصة" class="user-image">
+        <div class="page2-text">ح تصير واقع يوما ما حبيبي الحلو </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const envScreen = document.getElementById('envelope-screen');
+            const letterScreen = document.getElementById('letter-screen');
+
+            envScreen.style.opacity = '0';
+            setTimeout(() => {
+                envScreen.style.display = 'none';
+                letterScreen.style.display = 'block';
+                setTimeout(() => {
+                    letterScreen.style.opacity = '1';
+                    letterScreen.style.transform = 'translateY(0)';
+                }, 50);
+            }, 500);
+        }
+
+        function goToPage2() {
+            const letterScreen = document.getElementById('letter-screen');
+            const page2Screen = document.getElementById('page2-screen');
+            const img = document.querySelector('.user-image');
+
+            letterScreen.style.opacity = '0';
+            setTimeout(() => {
+                letterScreen.style.display = 'none';
+                page2Screen.style.display = 'flex';
+                
+                img.classList.add('shake-animation');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
